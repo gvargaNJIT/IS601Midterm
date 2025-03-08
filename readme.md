@@ -1,1 +1,1 @@
-Added calculator with no interface yet but has multiplication, division, addition, subtraction, and calculator history
+Added calculator with an interface that has multiplication, division, addition, subtraction, exit, and menu commands
