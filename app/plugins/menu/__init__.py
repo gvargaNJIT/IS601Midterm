@@ -1,9 +1,11 @@
 #Menu Plug-In
 
+import logging
 from app.commands import Command
 
 class MenuCommand(Command):
     def execute(self):
+        logging.info("Showed user menu options for the program")
         print("Here are the options this program has:\n")
         print("add - Starts addition operation\n")
         print("subract - Starts subtraction operation\n")

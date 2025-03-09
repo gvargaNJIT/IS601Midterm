@@ -16,8 +16,10 @@ class Commandlist:
 
     def execute_command(self, command_name: str):
         try:
+            logging.info(f"{command_name} is operation chosen")
             self.commands[command_name].execute()
         except KeyError:
+            logging.error(f"{command_name} is not a valid operation")
             print(f"{command_name} is not a valid operation")
 
 class NumberInput:
@@ -28,5 +30,6 @@ class NumberInput:
         try:
             return Decimal(a)
         except Exception as e:
+            logging.error(f"{a} is not a valid number. Exiting operation")
             print(f"{a} is not a valid number")
             return 1
