@@ -1,27 +1,18 @@
 #Calculator History
 
-from typing import List
-from calculations.calculationClass import Calculation
-
-
 class CalcHistory:
-    history: List[Calculation] = []
+    history = []
 
     @classmethod
-    def add_calculation(cls, calculation: Calculation):
-        cls.history.append(calculation)
-
-    @classmethod
-    def get_history(cls) -> List[Calculation]:
-        return cls.history
+    def add_calculation(cls, string: str):
+        cls.history.append(str(string))
 
     @classmethod
     def clear_history(cls):
         cls.history.clear()
 
     @classmethod
-    def get_latest(cls) -> Calculation:
+    def get_latest(cls):
         if cls.history:
             return cls.history[-1]
         return None
-    

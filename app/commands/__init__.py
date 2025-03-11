@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from decimal import Decimal
+from calculations.calcHistory import CalcHistory
 import logging
 import os
 import pandas as pd
 
-calculator_history = { }
 data_dir = './data'
 
 class Command(ABC):
@@ -18,7 +18,11 @@ class Commandlist:
 
     def register_command(self, command_name: str, command: Command):
         self.commands[command_name] = command
-
+        filename = os.path.basename(command.__module__)
+        filename_without_extension = os.path.splitext(filename)[-1]
+        filename_clean = filename_without_extension.lstrip('.')
+        logging.info(f"Command '{command_name}' from plugin '{filename_clean}' registered.")
+    
     def execute_command(self, command_name: str):
         try:
             logging.info(f"{command_name} is operation chosen")
@@ -42,7 +46,7 @@ class NumberInput:
 class Data:
     
     def write_data(self):
-        df_states = pd.DataFrame(list(calculator_history.items()), columns=['Function', 'Result'])
+        df_states = pd.DataFrame(CalcHistory.history, columns=['Calculation History'])
         csv_file_path = os.path.join(data_dir, 'calc_history.csv')
         df_states.to_csv(csv_file_path, index=False)
 
@@ -54,6 +58,6 @@ class Data:
         elif not os.access(data_dir, os.W_OK):
             logging.error(f"The directory '{data_dir}' is not writeable")
             return
-        df_states = pd.DataFrame(list(calculator_history.items()), columns=['Function', 'Result'])
+        df_states = pd.DataFrame(CalcHistory.history, columns=['Calculation History'])
         csv_file_path = os.path.join(data_dir, 'calc_history.csv')
         df_states.to_csv(csv_file_path, index=False)

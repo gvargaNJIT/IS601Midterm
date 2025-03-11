@@ -8,7 +8,11 @@ from dotenv import load_dotenv
 import logging
 import logging.config
 from app.commands import Commandlist, Command, Data
-import pandas as pd
+from app.plugins.history.viewHistory import ViewCommand
+from app.plugins.history.back import BackCommand
+from app.plugins.history.deleteHistory import DeleteCommand
+from app.plugins.history.getlatest import LatestCommand
+
 
 class App:
     def __init__(self):
@@ -52,9 +56,12 @@ class App:
                         if inspect.isabstract(item):
                             continue
                         self.command_list.register_command(plugin_name, item())
-                        logging.info(f"Command '{plugin_name}' from plugin '{plugin_name}' registered.")
 
     def start(self):
+        self.command_list.register_command("view history", ViewCommand())
+        self.command_list.register_command("back", BackCommand())
+        self.command_list.register_command("get latest", LatestCommand())
+        self.command_list.register_command("delete history", DeleteCommand())
         self.load_plugins()
 
         print("Welcome to the Calculator! Enter an operation or type 'exit' to leave the program")
