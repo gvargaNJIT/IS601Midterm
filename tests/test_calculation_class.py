@@ -6,10 +6,10 @@ from calculations.calculationClass import Calculation
 from calculations.operations import divide
 
 
-def test_calculations():
-    '''Testing calculations'''
-    test = Calculation(2, 4, divide)
-    assert test.get_result() == 0.5
+def test_calculations(a, b, operation, expected):
+    '''Testing all calculations'''
+    test = Calculation(a, b, operation)
+    assert test.get_result() == expected
 
 def test_undefined():
     '''Testing dividing by zero'''

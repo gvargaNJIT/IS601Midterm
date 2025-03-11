@@ -152,3 +152,58 @@ def test_menu(capfd, monkeypatch):
         app.start()
     captured = capfd.readouterr()
     assert "Here are the options this program has:" in captured.out
+
+def test_back(capfd, monkeypatch):
+    '''Testing Back Command'''
+    command = 'back'
+    answers = iter([command, 'exit'])
+    monkeypatch.setattr('builtins.input', lambda name: next(answers))
+    app = App()
+    with pytest.raises(SystemExit):
+        app.start()
+    captured = capfd.readouterr()
+    assert "Welcome to the Calculator! Enter an operation or type 'exit' to leave the program" in captured.out
+
+def test_history(capfd, monkeypatch):
+    '''Testing History Command'''
+    command = 'history'
+    answers = iter([command, 'exit'])
+    monkeypatch.setattr('builtins.input', lambda name: next(answers))
+    app = App()
+    with pytest.raises(SystemExit):
+        app.start()
+    captured = capfd.readouterr()
+    assert "Welcome to the calculator history menu! Type one of the options from below:" in captured.out
+
+def test_viewhistory(capfd, monkeypatch):
+    '''Testing View History Command'''
+    command = 'view history'
+    answers = iter(['delete history', 'add','2','2',command, 'exit'])
+    monkeypatch.setattr('builtins.input', lambda name: next(answers))
+    app = App()
+    with pytest.raises(SystemExit):
+        app.start()
+    captured = capfd.readouterr()
+    assert "2 + 2 = 4" in captured.out
+
+def test_getlatest(capfd, monkeypatch):
+    '''Testing Get Latest Command'''
+    command = 'get latest'
+    answers = iter(['delete history', 'multiply','3','4',command, 'exit'])
+    monkeypatch.setattr('builtins.input', lambda name: next(answers))
+    app = App()
+    with pytest.raises(SystemExit):
+        app.start()
+    captured = capfd.readouterr()
+    assert "3 * 4 = 12" in captured.out
+
+def test_deletehistory(capfd, monkeypatch):
+    '''Testing Delete History Command'''
+    command = 'delete history'
+    answers = iter(['add','2','2',command, 'view history','exit'])
+    monkeypatch.setattr('builtins.input', lambda name: next(answers))
+    app = App()
+    with pytest.raises(SystemExit):
+        app.start()
+    captured = capfd.readouterr()
+    assert "" in captured.out
