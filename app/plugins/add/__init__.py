@@ -1,7 +1,7 @@
 #Addition Plug_In
 
 import logging
-from app.commands import Command, NumberInput
+from app.commands import Command, NumberInput, calculator_history, Data
 from calculations import Calculator
 from decimal import Decimal
 
@@ -21,5 +21,7 @@ class AddCommand(Command):
         else:
             logging.info(f"{b} was entered as Number 2 for addition operation")
         result = Calculator.add(a, b)
+        calculator_history[f'{a}+{b}'] = f'{result}'
+        Data.write_data(self)
         logging.info(f"The result is {result}")
         print(f"The result is {result}")

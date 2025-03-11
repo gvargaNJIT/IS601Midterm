@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 import logging
-from app.commands import Command, NumberInput
+from app.commands import Command, NumberInput, calculator_history, Data
 from calculations import Calculator
 
 class DivideCommand(Command):
@@ -19,11 +19,15 @@ class DivideCommand(Command):
         if b == 0:
             logging.error(f"The result is undefined")
             print(f"The result is undefined. Exiting operation")
+            calculator_history[f'{a}/0'] = 'Undefined'
+            Data.write_data(self)
             return 0
         elif not isinstance(b, Decimal):
             return 0
         else:
             logging.info(f"{b} was entered as Number 2 for division operation")
             result = Calculator.divide(a, b)
+            calculator_history[f'{a}/{b}'] = f'{result}'
+            Data.write_data(self)
             logging.info(f"The result is {result}")
             print(f"The result is {result}")

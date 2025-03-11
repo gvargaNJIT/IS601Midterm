@@ -7,17 +7,20 @@ import importlib
 from dotenv import load_dotenv
 import logging
 import logging.config
-from app.commands import Commandlist, Command
+from app.commands import Commandlist, Command, Data
+import pandas as pd
 
 class App:
     def __init__(self):
         os.makedirs('logs', exist_ok=True)
         self.configure_logging()
+        Data
+        Data.configure_data(self)
         load_dotenv()
         self.settings = self.load_environment_variables()
         self.settings.setdefault('ENVIRONMENT', 'TESTING')
         self.command_list = Commandlist()
-
+    
     def configure_logging(self):
         logging_conf_path = 'logging.conf'
         if os.path.exists(logging_conf_path):
@@ -34,13 +37,6 @@ class App:
     def get_environment_variable(self, env_var: str = 'ENVIRONMENT'):
         return self.settings.get(env_var, None)
 
-    def register_plugin_commands(self, plugin_module, plugin_name):
-        for item_name in dir(plugin_module):
-            item = getattr(plugin_module, item_name)
-            if isinstance(item, type) and issubclass(item, Command) and item is not Command:
-                self.command_list.register_command(plugin_name, item())
-                logging.info(f"Command '{plugin_name}' from plugin '{plugin_name}' registered.")
-
     def load_plugins(self):
         plugins_package = 'app.plugins'
         plugins_path = plugins_package.replace('.', '/')
@@ -56,6 +52,7 @@ class App:
                         if inspect.isabstract(item):
                             continue
                         self.command_list.register_command(plugin_name, item())
+                        logging.info(f"Command '{plugin_name}' from plugin '{plugin_name}' registered.")
 
     def start(self):
         self.load_plugins()
