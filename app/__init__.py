@@ -19,22 +19,16 @@ csv2_file = './data/gpt_calc_history.csv'
 
 class App:
     def __init__(self):
-        # Ensure logs directory exists
         os.makedirs('logs', exist_ok=True)
-        
-        # Configure logging
         self.configure_logging()
-        
-        # Initialize Data and configure/load it
         self.data_handler = Data()
-
-        # Load data from CSV2 (gpt_calc_history.csv) into CalcHistory.history, update with .env values, then save to CSV1
         if os.path.exists(csv2_file):
             self.data_handler.load_data_into_list(csv2_file)
             self.data_handler.write_data()
         else:
             logging.error(f"{csv2_file} does not exist. Cannot load data from it.")
-        
+        self.settings = self.load_environment_variables()
+        self.settings.setdefault('ENVIRONMENT', 'TESTING')
         self.command_list = Commandlist()
     
     def configure_logging(self):

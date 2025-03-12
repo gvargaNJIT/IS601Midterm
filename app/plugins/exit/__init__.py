@@ -18,7 +18,6 @@ class ExitCommand(Command):
             data_from_csv1 = Data.load_data_from_csv1(csv1_file)
             df_to_save = pd.DataFrame(data_from_csv1)  
             Data.save_data_to_gpt(df_to_save, csv2_file)
-            Data.load_data_from_gpt(csv2_file, csv1_file)
             data_from_csv1 = Data.load_data_from_csv1(csv1_file)
         else:
             df2['Calculation History'] = None
