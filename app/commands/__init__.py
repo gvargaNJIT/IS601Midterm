@@ -134,5 +134,8 @@ class Data:
             CalcHistory.history.remove("/data/calc_history.csv")
         elif "./data/gpt_calc_history.csv" in CalcHistory.history:
             CalcHistory.history.remove("./data/gpt_calc_history.csv")
-        for i in range(len(CalcHistory.history)):
-            CalcHistory.history[i] = CalcHistory.history[i].strip()
+        try:
+            for i in range(len(CalcHistory.history)):
+                CalcHistory.history[i] = CalcHistory.history[i].strip()
+        except AttributeError:
+            return
