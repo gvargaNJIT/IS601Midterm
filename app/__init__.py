@@ -7,22 +7,34 @@ import importlib
 from dotenv import load_dotenv
 import logging
 import logging.config
+import pandas as pd
 from app.commands import Commandlist, Command, Data
 from app.plugins.history.viewHistory import ViewCommand
 from app.plugins.history.back import BackCommand
 from app.plugins.history.deleteHistory import DeleteCommand
 from app.plugins.history.getlatest import LatestCommand
 
+csv1_file = './data/calc_history.csv'
+csv2_file = './data/gpt_calc_history.csv'
 
 class App:
     def __init__(self):
+        # Ensure logs directory exists
         os.makedirs('logs', exist_ok=True)
+        
+        # Configure logging
         self.configure_logging()
-        Data
-        Data.configure_data(self)
-        load_dotenv()
-        self.settings = self.load_environment_variables()
-        self.settings.setdefault('ENVIRONMENT', 'TESTING')
+        
+        # Initialize Data and configure/load it
+        self.data_handler = Data()
+
+        # Load data from CSV2 (gpt_calc_history.csv) into CalcHistory.history, update with .env values, then save to CSV1
+        if os.path.exists(csv2_file):
+            self.data_handler.load_data_into_list(csv2_file)
+            self.data_handler.write_data()
+        else:
+            logging.error(f"{csv2_file} does not exist. Cannot load data from it.")
+        
         self.command_list = Commandlist()
     
     def configure_logging(self):
@@ -63,6 +75,7 @@ class App:
         self.command_list.register_command("get latest", LatestCommand())
         self.command_list.register_command("delete history", DeleteCommand())
         self.load_plugins()
+        Data.kill_it(self)
 
         print("Welcome to the Calculator! Enter an operation or type 'exit' to leave the program")
         while True:

@@ -6,6 +6,7 @@ from calculations.calcHistory import CalcHistory
 
 class DeleteCommand(Command):
     def execute(self):
+        Data.kill_it(self)
         CalcHistory.clear_history()
         Data.write_data(self)
         logging.info(f"Cleared calculator history")

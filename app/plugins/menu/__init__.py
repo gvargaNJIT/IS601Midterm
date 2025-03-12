@@ -1,10 +1,11 @@
 #Menu Plug-In
 
 import logging
-from app.commands import Command
+from app.commands import Command, Data
 
 class MenuCommand(Command):
     def execute(self):
+        Data.kill_it(self)
         logging.info("Showed user menu options for the program")
         print("Here are the options this program has:\n")
         print("add - Starts addition operation\n")

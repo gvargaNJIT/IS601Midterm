@@ -10,6 +10,7 @@ class AddCommand(Command):
         self.number_input = NumberInput()
 
     def execute(self):
+        Data.kill_it(self)
         a = self.number_input.list_number(input("Number 1: "))
         if not isinstance(a, Decimal):
             return 0

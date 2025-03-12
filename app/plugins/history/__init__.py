@@ -1,9 +1,10 @@
 # History PlugIn
 
-from app.commands import Command
+from app.commands import Command, Data
 
 class HistoryCommand(Command):
     def execute(self):
+        Data.kill_it(self)
         print(f"Welcome to the calculator history menu! Type one of the options from below:\n")
         print("view history - Shows calculator history\n")
         print("get latest - Shows last operation saved to the history\n")
