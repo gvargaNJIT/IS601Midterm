@@ -10,11 +10,9 @@ class MenuContext:
         self.strategy = strategy
 
     def set_strategy(self, strategy: MenuStrategy):
-        """Change the menu dynamically."""
         self.strategy = strategy
 
     def show_menu(self):
-        """Execute the selected menu strategy."""
         self.strategy.display()
 
 class MainMenuStrategy(MenuStrategy):
