@@ -1,13 +1,14 @@
 # History PlugIn
 
+import logging
 from app.commands import Command, Data
+from app.strategies import HistoryMenuStrategy, MenuContext
 
 class HistoryCommand(Command):
+    def __init__(self):
+        self.menu_context = MenuContext(HistoryMenuStrategy())
+
     def execute(self):
+        logging.info("Showed history management options")
         Data.kill_it(self)
-        print(f"Welcome to the calculator history menu! Type one of the options from below:\n")
-        print("view history - Shows calculator history\n")
-        print("get latest - Shows last operation saved to the history\n")
-        print("delete history - Deletes all calculator history that was recorded\n")
-        print("back - Returns to calculator program\n")
-        return 0
+        self.menu_context.show_menu()
